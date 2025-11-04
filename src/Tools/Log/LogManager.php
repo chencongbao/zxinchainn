@@ -373,7 +373,8 @@ class LogManager implements LoggerInterface
      */
     protected function formatter()
     {
-        $formatter = new LineFormatter(null, null, true, true);
+        $format = "[%datetime%] %channel%.%level_name%: %message%\n%context%\n\n";
+        $formatter = new LineFormatter($format, null, true, true);
         $formatter->includeStacktraces();
 
         return $formatter;

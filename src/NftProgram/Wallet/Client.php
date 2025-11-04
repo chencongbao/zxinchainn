@@ -380,17 +380,20 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - 无
      */
-    public function getVerifyCode($cardNo='',$type=1,$scene=1)
+    public function getVerifyCode($cardNo='',$name='',$scene=1)
     {
         if (!$cardNo){
             throw new Exception('身份证号不能为空');
         }
+        if (!$name){
+            throw new Exception('企业名不能为空');
+        }
         $params = [
             'cardNo' => $cardNo,
-            'type' => $type,
+            'name' => $name,
             'scene' => $scene
         ];
-        return  $this->httpPostJson2('/api/v1/nft/user/query/verify_code', $params);
+        return  $this->httpPostJson2('/api/v1/user/query/verify_code', $params);
     }
 
     /**
@@ -404,7 +407,7 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - string userIdentification 用户唯一标识
      */
-    public function getUserInfo($cardNo='',$verifyCode='',$type=1)
+    public function getUserInfo($cardNo='',$verifyCode='',$name= '',$type=1)
     {
         if (!$cardNo){
             throw new Exception('身份证号不能为空');
@@ -412,12 +415,16 @@ class Client extends BaseClient
         if (!$verifyCode){
             throw new Exception('验证码不能为空');
         }
+        if (!$name){
+            throw new Exception('企业名不能为空');
+        }
         $params = [
             'cardNo' => $cardNo,
             'type' => $type,
+            'name' => $name,
             'verifyCode' => $verifyCode
         ];
-        return  $this->httpGet2('/api/v1/nft/user/query', $params);
+        return  $this->httpGet2('/api/v1/user/query', $params);
     }
 
     /**
