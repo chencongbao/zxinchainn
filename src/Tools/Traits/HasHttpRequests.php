@@ -155,7 +155,7 @@ trait HasHttpRequests
         }
         if ($this->app['config']['debug']) {
             $this->app->logger->info("=============================================");
-            $this->app->logger->info("body", json_decode($options['body'], true));
+            $this->app->logger->info("body", isset($options['body']) ? json_decode($options['body'], true) : []);
             $this->app->logger->info("header", $options['headers'] ?? []);
         }
         $response = $this->getHttpClient()->request($method, $url, $options);

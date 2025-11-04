@@ -32,7 +32,7 @@ class Client extends BaseClient
         $pubKey = $this->app->config['pubKey'];
         $priKey = $this->app->config['priKey'];
         $userPubKey = $userPubKey?$userPubKey:$pubKey;
-        $timestamp = $this->headers['Signature-Time'];
+        $timestamp = (string)time();
         $params = [
             'timestamp' => $timestamp,
             'pubKey' => $pubKey,
@@ -49,7 +49,7 @@ class Client extends BaseClient
         }
         $params['pubSignedData'] = $this->signByPriKey($pubSignedData,$priKey)['signedData'];
         $params['userSignedData'] = $this->signByPriKey($userSignedData,$priKey)['signedData'];
-        return  $this->httpPostJson('/api/v1/nft/upload/secret', $params);
+        return  $this->httpPostJson('/api/v1/user/upload/secret', $params);
     }
 
     /**

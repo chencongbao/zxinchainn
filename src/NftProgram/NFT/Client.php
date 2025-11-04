@@ -284,7 +284,7 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - taskId 任务ID
      */
-    public function publishNft($priKey='',$author='',$name='',$url='',$displayUrl='',$desc='',$flag='',$seriesId='',$publishCount=1,$seriesBeginIndex=1,$sellStatus=1,$sellCount=0,$operateId='',$metaData='',$hash='')
+    public function publishNft($priKey='',$author='',$name='',$url='',$displayUrl='',$desc='',$flag='',$seriesId='',$publishCount=1,$seriesBeginIndex=1,$sellStatus=2,$sellCount=0,$operateId='',$metaData='',$hash='')
     {
         if (!$priKey || !$author || !$name || !$url || !$displayUrl || !$desc){
             throw new Exception('声明人私钥或系列名不能为空');
@@ -297,7 +297,14 @@ class Client extends BaseClient
         $pubKey = $pubResult["pub"];
         $operateId = $operateId?$operateId:$this->create_uuid();
         $platformPubKey = $this->app->config['pubKey'];
-        $hash = $hash?$hash:$this->sm3Hash(Bytes::getUrlBytes($url));
+        $data = file_get_contents($url);
+        $base64 = base64_encode($data);
+        if(empty($hash)){
+            $result = $this->sm3Hash($base64);
+            if(!empty($result)){
+                $hash = $result['digest'];
+            }
+        }
         $signText = $platformPubKey.'_'.$pubKey.'_publish_nft_'.$author.'_'.$name.'_'.$url.'_'.$displayUrl.'_'.$hash.'_'.$desc.'_'.$flag.'_'.$publishCount.'_'.$seriesId.'_'.$seriesBeginIndex.'_'.$sellStatus.'_'.$sellCount.'_'.$metaData.'_'.$operateId;
         $signature = $this->signByPriKey($signText,$priKey)['signedData'];
         $platformSignature  = $this->signByPriKey($signText)['signedData'];
@@ -320,6 +327,7 @@ class Client extends BaseClient
             'metaData' => $metaData,
             'signature' => $signature,
             'platformSignature' => $platformSignature,
+            'packageType' => "0601"
         ];
         return  $this->httpPostJson('/api/v1/nft/publish', $params);
     }

@@ -66,11 +66,7 @@ class BaseClient
         $result = $this->httpPostJson('http://127.0.0.1:30505/generateApiSign', $params);
         return isset($result["signData"])?$result["signData"]:false;
     }
-    public function getSign2()
-    {
-        $result = $this->httpPostJson('http://127.0.0.1:30505/generateApiSign', []);
-        return isset($result["signData"])?$result["signData"]:false;
-    }
+
 
     /**
      * GET request.
