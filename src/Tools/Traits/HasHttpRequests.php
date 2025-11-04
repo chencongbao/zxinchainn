@@ -162,7 +162,6 @@ trait HasHttpRequests
         $response->getBody()->rewind();
         if ($this->app['config']['debug']) {
             $this->app->logger->info("response", json_decode($response->getBody()->getContents(),true));
-            $this->app->logger->info("=============================================");
         }
         return $response;
     }

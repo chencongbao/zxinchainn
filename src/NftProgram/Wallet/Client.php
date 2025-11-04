@@ -29,13 +29,13 @@ class Client extends BaseClient
      */
     public function getRegisterCode($mobile)
     {
-        if (!$mobile){
+        if (!$mobile) {
             throw new Exception('手机号不能为空');
         }
         $params = [
             'mobile' => $mobile,
         ];
-        return  $this->httpPostJson2('/api/v1/nft/register/verify_code', $params);
+        return $this->httpPostJson2('/api/v1/nft/register/verify_code', $params);
     }
 
     /**
@@ -52,18 +52,18 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - string userIdentification 用户唯一标识
      */
-    public function registerPerson($personName='',$mobile='',$verifyCode='',$idCard='',$cardType=1,$email='')
+    public function registerPerson($personName = '', $mobile = '', $verifyCode = '', $idCard = '', $cardType = 1, $email = '')
     {
-        if (!$mobile){
+        if (!$mobile) {
             throw new Exception('手机号不能为空');
         }
-        if (!$personName){
+        if (!$personName) {
             throw new Exception('用户名不能为空');
         }
-        if (!$verifyCode){
+        if (!$verifyCode) {
             throw new Exception('验证码不能为空');
         }
-        if (!$idCard){
+        if (!$idCard) {
             throw new Exception('证件号不能为空');
         }
         $params = [
@@ -73,8 +73,8 @@ class Client extends BaseClient
             'idCard' => $idCard,
             'cardType' => $cardType,
         ];
-        if($email) $params['email'] = $email;
-        return  $this->httpPostJson2('/api/v1/nft/register/person', $params);
+        if ($email) $params['email'] = $email;
+        return $this->httpPostJson2('/api/v1/nft/register/person', $params);
     }
 
     /**
@@ -90,15 +90,15 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - string userIdentification 用户唯一标识
      */
-    public function registerPersonPlatform($personName='',$mobile='',$idCard='',$cardType=1,$email='')
+    public function registerPersonPlatform($personName = '', $mobile = '', $idCard = '', $cardType = 1, $email = '')
     {
-        if (!$mobile){
+        if (!$mobile) {
             throw new Exception('手机号不能为空');
         }
-        if (!$personName){
+        if (!$personName) {
             throw new Exception('用户名不能为空');
         }
-        if (!$idCard){
+        if (!$idCard) {
             throw new Exception('证件号不能为空');
         }
         $params = [
@@ -107,10 +107,10 @@ class Client extends BaseClient
             'idCard' => $idCard,
             'cardType' => $cardType,
             'platformPubKey' => $this->app->config['pubKey'],
-            'platformSignData' => $this->signByPriKey($personName.'_'.$mobile.'_'.$idCard)['signedData'],
+            'platformSignData' => $this->signByPriKey($personName . '_' . $mobile . '_' . $idCard)['signedData'],
         ];
-        if($email) $params['email'] = $email;
-        return  $this->httpPostJson('/api/v1/nft/register/person_platform', $params);
+        if ($email) $params['email'] = $email;
+        return $this->httpPostJson('/api/v1/nft/register/person_platform', $params);
     }
 
     /**
@@ -123,18 +123,18 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - bool result - true: 同一主体 false：非同一主体
      */
-    public function checkAddressToUser($address1='',$address2='')
+    public function checkAddressToUser($address1 = '', $address2 = '')
     {
-        if (!$address1 || !$address2){
+        if (!$address1 || !$address2) {
             throw new Exception('两个地址不能为空');
         }
         $params = [
             'address1' => $address1,
             'address2' => $address2,
             'platformPubKey' => $this->app->config['pubKey'],
-            'platformSignData' => $this->signByPriKey($address1.$address2)['signedData'],
+            'platformSignData' => $this->signByPriKey($address1 . $address2)['signedData'],
         ];
-        return  $this->httpGet('/api/v1/nft/query/user/address/belong_to_user', $params);
+        return $this->httpGet('/api/v1/nft/query/user/address/belong_to_user', $params);
     }
 
     /**
@@ -148,19 +148,19 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - int id - 图片id
      */
-    public function uploadBusinessLicense($file=null,$mobile='',$verifyCode='')
+    public function uploadBusinessLicense($file = null, $mobile = '', $verifyCode = '')
     {
-        if (!$mobile || !$verifyCode){
+        if (!$mobile || !$verifyCode) {
             throw new Exception('手机号和验证码不能为空');
         }
-        if (!$file){
+        if (!$file) {
             throw new Exception('没有发现file文件');
         }
         $params = [
             'mobile' => $mobile,
             'verifyCode' => $verifyCode,
         ];
-        return  $this->httpUpload2('/api/v1/nft/business_license/upload', $file,$params);
+        return $this->httpUpload2('/api/v1/nft/business_license/upload', $file, $params);
     }
 
     /**
@@ -172,18 +172,18 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - int id - 图片id
      */
-    public function uploadLicensePlatform($file=null)
+    public function uploadLicensePlatform($file = null)
     {
-        if (!$file){
+        if (!$file) {
             throw new Exception('没有发现file文件');
         }
-        $platformIdentification=$this->app->config['identification'];
+        $platformIdentification = $this->app->config['identification'];
         $params = [
             'platformIdentification' => $platformIdentification,
             'platformPubKey' => $this->app->config['pubKey'],
             'platformSignData' => $this->signByPriKey($platformIdentification)['signedData'],
         ];
-        return  $this->httpUpload('/api/v1/nft/business_license/upload_platform', $file,$params);
+        return $this->httpUpload('/api/v1/nft/business_license/upload_platform', $file, $params);
     }
 
     /**
@@ -197,19 +197,19 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - int id - 图片id
      */
-    public function uploadOfficialLetter($file=null,$mobile='',$verifyCode='')
+    public function uploadOfficialLetter($file = null, $mobile = '', $verifyCode = '')
     {
-        if (!$mobile || !$verifyCode){
+        if (!$mobile || !$verifyCode) {
             throw new Exception('手机号和验证码不能为空');
         }
-        if (!$file){
+        if (!$file) {
             throw new Exception('没有发现file文件');
         }
         $params = [
             'mobile' => $mobile,
             'verifyCode' => $verifyCode,
         ];
-        return  $this->httpUpload2('/api/v1/nft/official_letter/upload', $file,$params);
+        return $this->httpUpload2('/api/v1/nft/official_letter/upload', $file, $params);
     }
 
     /**
@@ -221,18 +221,18 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - int id - 图片id
      */
-    public function uploadLetterPlatform($file=null)
+    public function uploadLetterPlatform($file = null)
     {
-        if (!$file){
+        if (!$file) {
             throw new Exception('没有发现file文件');
         }
-        $platformIdentification=$this->app->config['identification'];
+        $platformIdentification = $this->app->config['identification'];
         $params = [
             'platformIdentification' => $platformIdentification,
             'platformPubKey' => $this->app->config['pubKey'],
             'platformSignData' => $this->signByPriKey($platformIdentification)['signedData'],
         ];
-        return  $this->httpUpload('/api/v1/nft/official_letter/upload_platform', $file,$params);
+        return $this->httpUpload('/api/v1/nft/official_letter/upload_platform', $file, $params);
     }
 
     /**
@@ -257,30 +257,30 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - string userIdentification 用户唯一标识
      */
-    public function registerCompany($epName='',$creditCode='',$mobile='',$verifyCode='',$busiLicenseId=0,$representativeName='',$contact='',$idCard='',$cardType=1,$officialLetterId=0,$email='',$platformName='',$platformUrl='',$businessType=4)
+    public function registerCompany($epName = '', $creditCode = '', $mobile = '', $verifyCode = '', $busiLicenseId = 0, $representativeName = '', $contact = '', $idCard = '', $cardType = 1, $officialLetterId = 0, $email = '', $platformName = '', $platformUrl = '', $businessType = 4)
     {
-        if (!$mobile){
+        if (!$mobile) {
             throw new Exception('手机号不能为空');
         }
-        if (!$epName){
+        if (!$epName) {
             throw new Exception('企业名称不能为空');
         }
-        if (!$creditCode){
+        if (!$creditCode) {
             throw new Exception('企业信用代码不能为空');
         }
-        if ($busiLicenseId<1){
+        if ($busiLicenseId < 1) {
             throw new Exception('营业执照文件未能获取');
         }
-        if (!$representativeName){
+        if (!$representativeName) {
             throw new Exception('法人代表姓名不能为空');
         }
-        if (!$contact){
+        if (!$contact) {
             $contact = $representativeName;
         }
-        if (!$verifyCode){
+        if (!$verifyCode) {
             throw new Exception('验证码不能为空');
         }
-        if (!$idCard){
+        if (!$idCard) {
             throw new Exception('管理员证件号码不能为空');
         }
         $params = [
@@ -293,13 +293,13 @@ class Client extends BaseClient
             'verifyCode' => $verifyCode,
             'idCard' => $idCard,
             'cardType' => $cardType,
-            'businessType' =>$businessType,
+            'businessType' => $businessType,
         ];
-        if($email) $params['email'] = $email;
-        if($officialLetterId>0) $params['officialLetterId'] = $officialLetterId;
-        if($platformName) $params['platformName'] = $platformName;
-        if($platformUrl) $params['platformUrl'] =$platformUrl;
-        return  $this->httpPostJson2('/api/v1/nft/register/company', $params);
+        if ($email) $params['email'] = $email;
+        if ($officialLetterId > 0) $params['officialLetterId'] = $officialLetterId;
+        if ($platformName) $params['platformName'] = $platformName;
+        if ($platformUrl) $params['platformUrl'] = $platformUrl;
+        return $this->httpPostJson2('/api/v1/nft/register/company', $params);
     }
 
 
@@ -324,27 +324,27 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - string userIdentification 用户唯一标识
      */
-    public function registerCompanyPlatform($epName='',$creditCode='',$mobile='',$busiLicenseId=0,$representativeName='',$contact='',$idCard='',$cardType=1,$officialLetterId=0,$email='',$platformName='',$platformUrl='',$businessType=4)
+    public function registerCompanyPlatform($epName = '', $creditCode = '', $mobile = '', $busiLicenseId = 0, $representativeName = '', $contact = '', $idCard = '', $cardType = 1, $officialLetterId = 0, $email = '', $platformName = '', $platformUrl = '', $businessType = 4)
     {
-        if (!$mobile){
+        if (!$mobile) {
             throw new Exception('手机号不能为空');
         }
-        if (!$epName){
+        if (!$epName) {
             throw new Exception('企业名称不能为空');
         }
-        if (!$creditCode){
+        if (!$creditCode) {
             throw new Exception('企业信用代码不能为空');
         }
-        if ($busiLicenseId<1){
+        if ($busiLicenseId < 1) {
             throw new Exception('营业执照文件未能获取');
         }
-        if (!$representativeName){
+        if (!$representativeName) {
             throw new Exception('法人代表姓名不能为空');
         }
-        if (!$contact){
+        if (!$contact) {
             $contact = $representativeName;
         }
-        if (!$idCard){
+        if (!$idCard) {
             throw new Exception('管理员证件号码不能为空');
         }
         $params = [
@@ -356,17 +356,16 @@ class Client extends BaseClient
             'mobile' => $mobile,
             'idCard' => $idCard,
             'cardType' => $cardType,
-            'businessType' =>$businessType,
+            'businessType' => $businessType,
             'platformPubKey' => $this->app->config['pubKey'],
-            'platformSignData' => $this->signByPriKey($epName.'_'.$creditCode.'_'.$representativeName.'_'.$contact.'_'.$mobile.'_'.$idCard)['signedData'],
+            'platformSignData' => $this->signByPriKey($epName . '_' . $creditCode . '_' . $representativeName . '_' . $contact . '_' . $mobile . '_' . $idCard)['signedData'],
         ];
-        if($email) $params['email'] = $email;
-        if($officialLetterId>0) $params['officialLetterId'] = $officialLetterId;
-        if($platformName) $params['platformName'] = $platformName;
-        if($platformUrl) $params['platformUrl'] =$platformUrl;
-        return  $this->httpPostJson('/api/v1/nft/register/company_platform', $params);
+        if ($email) $params['email'] = $email;
+        if ($officialLetterId > 0) $params['officialLetterId'] = $officialLetterId;
+        if ($platformName) $params['platformName'] = $platformName;
+        if ($platformUrl) $params['platformUrl'] = $platformUrl;
+        return $this->httpPostJson('/api/v1/nft/register/company_platform', $params);
     }
-
 
 
     /**
@@ -380,20 +379,20 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - 无
      */
-    public function getVerifyCode($cardNo='',$name='',$scene=1)
+    public function getVerifyCode($cardNo = '', $name = '', $type = 1)
     {
-        if (!$cardNo){
+        if (!$cardNo) {
             throw new Exception('身份证号不能为空');
         }
-        if (!$name){
+        if (!$name) {
             throw new Exception('企业名不能为空');
         }
         $params = [
             'cardNo' => $cardNo,
             'name' => $name,
-            'scene' => $scene
+            'type' => $type
         ];
-        return  $this->httpPostJson2('/api/v1/user/query/verify_code', $params);
+        return $this->httpPostJson2('/api/v1/user/query/verify_code', $params);
     }
 
     /**
@@ -407,15 +406,15 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - string userIdentification 用户唯一标识
      */
-    public function getUserInfo($cardNo='',$verifyCode='',$name= '',$type=1)
+    public function getUserInfo($cardNo = '', $verifyCode = '', $name = '', $type = 1)
     {
-        if (!$cardNo){
+        if (!$cardNo) {
             throw new Exception('身份证号不能为空');
         }
-        if (!$verifyCode){
+        if (!$verifyCode) {
             throw new Exception('验证码不能为空');
         }
-        if (!$name){
+        if (!$name) {
             throw new Exception('企业名不能为空');
         }
         $params = [
@@ -424,7 +423,7 @@ class Client extends BaseClient
             'name' => $name,
             'verifyCode' => $verifyCode
         ];
-        return  $this->httpGet2('/api/v1/user/query', $params);
+        return $this->httpGet2('/api/v1/user/query', $params);
     }
 
     /**
@@ -438,9 +437,9 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - address地址
      */
-    public function bindSubmit($pubKey='',$userIdentification='',$faceResultId='')
+    public function bindSubmit($pubKey = '', $userIdentification = '', $faceResultId = '')
     {
-        if (!$pubKey || !$userIdentification || !$faceResultId){
+        if (!$pubKey || !$userIdentification || !$faceResultId) {
             throw new Exception('参数提交不完整');
         }
         $params = [
@@ -449,7 +448,7 @@ class Client extends BaseClient
             'userIdentification' => $userIdentification,
             'faceResultId' => $faceResultId
         ];
-        return  $this->httpPostJson2('/api/v1/nft/identity/bind/submit', $params);
+        return $this->httpPostJson2('/api/v1/nft/identity/bind/submit', $params);
     }
 
     /**
@@ -463,9 +462,9 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - address地址
      */
-    public function bindSubmitByTrusted($userPubKey='',$userIdentification='',$faceResultId='')
+    public function bindSubmitByTrusted($userPubKey = '', $userIdentification = '', $faceResultId = '')
     {
-        if (!$userPubKey || !$userIdentification || !$faceResultId){
+        if (!$userPubKey || !$userIdentification || !$faceResultId) {
             throw new Exception('参数提交不完整');
         }
         $userSignData = $this->signByPriKey($userIdentification)['signedData'];
@@ -476,7 +475,7 @@ class Client extends BaseClient
             'platformPubKey' => $this->app->config['pubKey'],
             'platformSignData' => $this->signByPriKey($userSignData)['signedData'],
         ];
-        return  $this->httpPostJson('/api/v1/nft/identity/bind/submit_by_trusted_platform', $params);
+        return $this->httpPostJson('/api/v1/nft/identity/bind/submit_by_trusted_platform', $params);
     }
 
     /**
@@ -491,17 +490,17 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - address地址
      */
-    public function bindPlatformSelf($verifyCode='',$pubKey='',$userIdentification='')
+    public function bindPlatformSelf($verifyCode = '', $pubKey = '', $userIdentification = '')
     {
-        $pubKey = $pubKey?$pubKey:$this->app->config['pubKey'];
-        $userIdentification = $userIdentification?$userIdentification:$this->app->config['identification'];
+        $pubKey = $pubKey ? $pubKey : $this->app->config['pubKey'];
+        $userIdentification = $userIdentification ? $userIdentification : $this->app->config['identification'];
         $params = [
             'pubKey' => $pubKey,
             'signData' => $this->signByPriKey($userIdentification)['signedData'],
             'userIdentification' => $userIdentification,
             'verifyCode' => $verifyCode
         ];
-        return  $this->httpPostJson('/api/v1/nft/identity/bind/platform_self', $params);
+        return $this->httpPostJson('/api/v1/nft/identity/bind/platform_self', $params);
     }
 
     /**
@@ -513,16 +512,16 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - string userIdentification 用户唯一标识
      */
-    public function queryBindInfo($addressList=null)
+    public function queryBindInfo($addressList = null)
     {
-        if (!$addressList){
+        if (!$addressList) {
             throw new Exception('地址列表不能为空');
         }
-        $addressList = is_array($addressList)?$addressList:[$addressList];
+        $addressList = is_array($addressList) ? $addressList : [$addressList];
         $params = [
             'addressList' => $addressList,
         ];
-        return  $this->httpGet2('/api/v1/nft/identity/bind/query', $params);
+        return $this->httpGet2('/api/v1/nft/identity/bind/query', $params);
     }
 
     /**
@@ -535,16 +534,16 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - string userIdentification 用户唯一标识
      */
-    public function verifyAddressIdentity($address='',$faceResultId='')
+    public function verifyAddressIdentity($address = '', $faceResultId = '')
     {
-        if (!$address || !$faceResultId){
+        if (!$address || !$faceResultId) {
             throw new Exception('地址或人脸识别不能为空');
         }
         $params = [
             'address' => $address,
             'faceResultId' => $faceResultId,
         ];
-        return  $this->httpPostJson2('/api/v1/nft/identity/verify/address_identity', $params);
+        return $this->httpPostJson2('/api/v1/nft/identity/verify/address_identity', $params);
     }
 
 
@@ -558,16 +557,16 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - string h5Url 启动人脸核身的 h5 url ｜ string faceId 人脸核验请求的唯一标识，需要保存
      */
-    public function faceUrl($userIdentification='',$from='')
+    public function faceUrl($userIdentification = '', $from = '')
     {
-        if (!$userIdentification){
+        if (!$userIdentification) {
             throw new Exception('用户唯一标识不能为空');
         }
         $params = [
             'userIdentification' => $userIdentification,
         ];
-        if($from) $params['from'] = $from;
-        return  $this->httpPostJson2('/api/v1/nft/face/url', $params);
+        if ($from) $params['from'] = $from;
+        return $this->httpPostJson2('/api/v1/nft/face/url', $params);
     }
 
     /**
@@ -580,16 +579,16 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - string h5Url 启动人脸核身的 h5 url ｜ string faceId 人脸核验请求的唯一标识，需要保存
      */
-    public function faceUrlByAddress($address='',$from='')
+    public function faceUrlByAddress($address = '', $from = '')
     {
-        if (!$address){
+        if (!$address) {
             throw new Exception('用户地址不能为空');
         }
         $params = [
             'address' => $address,
         ];
-        if($from) $params['from'] = $from;
-        return  $this->httpPostJson2('/api/v1/nft/face/url_by_address', $params);
+        if ($from) $params['from'] = $from;
+        return $this->httpPostJson2('/api/v1/nft/face/url_by_address', $params);
     }
 
 
@@ -603,18 +602,17 @@ class Client extends BaseClient
      * @return      string retMsg 返回信息
      * @return      json data - boolean result 人脸核身结果
      */
-    public function faceQuery($userIdentification='',$faceId='')
+    public function faceQuery($userIdentification = '', $faceId = '')
     {
-        if (!$userIdentification || !$faceId){
+        if (!$userIdentification || !$faceId) {
             throw new Exception('用户标识和人脸请求的唯一id不能为空');
         }
         $params = [
             'userIdentification' => $userIdentification,
             'faceId' => $faceId,
         ];
-        return  $this->httpGet2('/api/v1/nft/face/query', $params);
+        return $this->httpGet2('/api/v1/nft/face/query', $params);
     }
-
 
 
 }

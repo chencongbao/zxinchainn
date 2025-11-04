@@ -155,7 +155,7 @@ class Client extends BaseClient
      */
     public function queryImageModeration($imageUrl=null,$interval=0,$maxFrames=1)
     {
-        if (!$$imageUrl){
+        if (!$imageUrl){
             throw new Exception('素材网络地址不能为空');
         }
         $params = [
@@ -163,7 +163,7 @@ class Client extends BaseClient
             'interval' => $interval,
             'maxFrames' => $maxFrames,
         ];
-        return  $this->httpPostJson('/api/v1/nft/query/image/moderation',$params);
+        return  $this->httpPostJson('/api/v1/user/query/image/moderation',$params);
     }
 
 
