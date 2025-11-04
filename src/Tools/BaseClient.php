@@ -50,9 +50,7 @@ class BaseClient
     {
         $this->app = $app;
         $signData = $this->getSign();
-        $this->headers = ['App-Id'=>$this->app->config["appId"],'Signature-Time'=>$signData['SignatureTime'],'Signature'=>$signData['Signature'],'Nonce'=>$signData['Nonce']];
-        $signData2 = $this->getSign2();
-        $this->headers2 = ['Signature-Time'=>$signData2['SignatureTime'],'Signature'=>$signData2['Signature'],'Nonce'=>$signData2['Nonce']];
+        $this->headers = ['Secret-Id'=>$this->app->config["appId"],'Cloud-trace-id'=>self::create_uuid(),'Signature-Time'=>$signData['SignatureTime'],'Signature'=>$signData['Signature'],'Nonce'=>$signData['Nonce']];
     }
 
     /**
@@ -230,7 +228,7 @@ class BaseClient
             $this->registerHttpMiddlewares();
         }
 
-        $options['headers'] = $this->headers2;
+        $options['headers'] = $this->headers;
 
         $response = $this->performRequest($url, $method, $options);
 

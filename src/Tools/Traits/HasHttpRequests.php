@@ -14,6 +14,7 @@ namespace NftZxinchainn\Tools\Traits;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -151,8 +152,17 @@ trait HasHttpRequests
         if (property_exists($this, 'baseUri') && !is_null($this->baseUri)) {
             $options['base_uri'] = $this->baseUri;
         }
+        if($this->app['config']['debug']){
+            $this->app->logger->info("=============================================");
+            $this->app->logger->info("body",$options['body'] ?? '');
+            $this->app->logger->info("header",$options['headers'] ?? '');
+        }
         $response = $this->getHttpClient()->request($method, $url, $options);
         $response->getBody()->rewind();
+        if($this->app['config']['debug']){
+            $this->app->logger->info("response",$response->getBody()->getContents());
+            $this->app->logger->info("=============================================");
+        }
         return $response;
     }
 
@@ -180,6 +190,12 @@ trait HasHttpRequests
         }
 
         $this->handlerStack = HandlerStack::create($this->getGuzzleHandler());
+
+        if($this->app['config']['debug']){
+            $this->handlerStack->push(Middleware::tap(function ($request, $options) {
+                $this->app->logger->info("请求地址",(string)$request->getUri());
+            }));
+        }
 
         foreach ($this->middlewares as $name => $middleware) {
             $this->handlerStack->push($middleware, $name);

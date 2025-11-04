@@ -5,14 +5,25 @@ use NftZxinchainn\Factory;
 use NftZxinchainn\Tools\Support\Bytes;
 
 $config = [
-        'appId' => '220412000100001',
-        'appKey' => 'c28092ba207b4d9da17fcc29c953a7f6',
-        'priKey' => "-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBHkwdwIBAQQg8vQDU+aaBjQZOj0V rXgKhSux9dfwpkkjaeEZXqtzppegCgYIKoEcz1UBgi2hRANCAATJKI5jsNEjGk+a fva2t9g4T6j9o7sHmQl1Z0wDZXv9XvolfdD2OhL7i6Y5w0r52or2JaILIx78p7hO KSlVu1iq\n-----END PRIVATE KEY-----\n",
-        'pubKey' => "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAEySiOY7DRIxpPmn72trfYOE+o/aO7 B5kJdWdMA2V7/V76JX3Q9joS+4umOcNK+dqK9iWiCyMe/Ke4TikpVbtYqg==\n-----END PUBLIC KEY-----\n",
-        'identification' => 'd7ee43c9881ae9594529bb9d8d5f3be462eb4257fb8fcf6432f3cad5937f5346',
-        'address' => "ZX89fd7b14d32eab21eb7b9ab6c6019c08113743a8",
-        'test' => true
-    ];
+    'appId' => '33333',
+    'appKey' => '234234',
+    'priKey' => "-----BEGIN PRIVATE KEY-----\n234234234\n-----END PRIVATE KEY-----\n",
+    'pubKey' => "-----BEGIN PUBLIC KEY-----\ndwerwerwer\n-----END PUBLIC KEY-----\n",
+    'identification' => 'fddfgdfg',
+    'address' => "dfgsdsdf",
+    'test' => false,
+    'log' => [
+        'default'  => 'daily', // or 'single'、'errorlog'、'syslog' 等
+        'channels' => [
+            'daily' => [
+                'driver' => 'daily',  // 日志驱动 daily = 按日期切割文件
+                'path'   => 'nft_zxin/logs/nft_zxin.log', // 日志文件路径
+                'days'   => 7,        // 保留天数
+                'level'  => 'debug',  // 日志等级
+            ],
+        ],
+    ],
+];
     $app = Factory::nftProgram($config);
 
 

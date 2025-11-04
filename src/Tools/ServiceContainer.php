@@ -88,11 +88,7 @@ class ServiceContainer extends Container
      */
     public function getConfig()
     {
-        if (isset($this->userConfig['test']) && $this->userConfig['test']){
-            $base_uri = 'https://nfttest2.zxinchain.com';
-        }else{
-            $base_uri = 'https://nfa.zxinchain.com';
-        }
+        $base_uri = 'https://open.zxchain.qq.com';
         if (!isset($this->userConfig['identification'])){
             $this->userConfig['identification'] = null;
         }
