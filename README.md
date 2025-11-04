@@ -13,7 +13,7 @@
 ### 安装
 
 ```nginx
-composer require moshong/nft_zxinchainn
+composer require chencongbao/zxinchainn
 ```
 
 ---
